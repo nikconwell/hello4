@@ -5,7 +5,7 @@ from http.server import BaseHTTPRequestHandler
 
 class HelloHandler(BaseHTTPRequestHandler):
     def do_GET(self):
-        message = f"Hello World from {socket.gethostname()}"
+        message = f"Yes! Hello World from {socket.gethostname()}"
         self.send_response(200)
         self.send_header("Content-type", "text/plain")
         self.end_headers()
@@ -19,5 +19,5 @@ httpd = http.server.HTTPServer(("", PORT), HelloHandler)
 # context.load_cert_chain(certfile="/cert.crt", keyfile="/cert.key")
 # httpd.socket = context.wrap_socket(httpd.socket, server_side=True)
 
-print(f"HTTP Hello World from {socket.gethostname()} on port {PORT}")
+print(f"HTTP Hello World!!! from {socket.gethostname()} on port {PORT}")
 httpd.serve_forever()
