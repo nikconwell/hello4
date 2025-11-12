@@ -20,23 +20,21 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GHCR_TOKEN }}
 
-
-
-      - name: Extract metadata (tags, labels)
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ghcr.io/${{ github.repository_owner }}/hello4
-          tags: |
-            type=raw,value=latest
-            type=sha
-            type=ref,event=branch
-            type=date,format=YYYYMMDD
+      - name: Set up tags
+        id: vars
+        run: |
+          DATE=$(date +%Y%m%d)
+          BRANCH=$(echo "${GITHUB_REF##*/}" | tr '/' '-')
+          echo "DATE=$DATE" >> $GITHUB_ENV
+          echo "BRANCH=$BRANCH" >> $GITHUB_ENV
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
           context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/hello-https:latest
+            ghcr.io/${{ github.repository_owner }}/hello-https:${{ github.sha }}
+            ghcr.io/${{ github.repository_owner }}/hello-https:${{ env.BRANCH }}
+            ghcr.io/${{ github.repository_owner }}/hello-https:${{ env.DATE }}
