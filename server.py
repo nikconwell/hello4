@@ -19,5 +19,5 @@ context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
 context.load_cert_chain(certfile="/cert.crt", keyfile="/cert.key")
 httpd.socket = context.wrap_socket(httpd.socket, server_side=True)
 
-print(f"Serving HTTPS Hello World from {socket.gethostname()} on port {PORT}")
+print(f"HTTPS Hello World from {socket.gethostname()} on port {PORT}")
 httpd.serve_forever()
