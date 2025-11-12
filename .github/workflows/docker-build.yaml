@@ -20,9 +20,22 @@ jobs:
           username: nikconwell
           password: ${{ secrets.GHCR_TOKEN }}
 
+
+
+      - name: Extract metadata (tags, labels)
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/nikconwell}}/hello4
+          tags: |
+            type=raw,value=latest
+            type=sha
+
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
           context: .
           push: true
-          tags: ghcr.io/nikconwell/hello4:latest
+	  tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
